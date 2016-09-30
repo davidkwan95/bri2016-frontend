@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "npm run express-server",
     "webpack-watch": "webpack -w",
     "express-server": "node ./server",
     "dev": "concurrent --kill-others \"npm run webpack-watch\" \"npm run express-server\"",
