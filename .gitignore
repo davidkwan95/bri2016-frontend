@@ -11,3 +11,4 @@ npm-debug.log
 .happypack
 .tmp_commits_squashed
 dump.rdb
+public/bundle.js
