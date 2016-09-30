@@ -13,7 +13,7 @@
 </head>
 <body>
   <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">Paylight</a>
       <ul class="right hide-on-med-and-down">
         <li><a href="#">Navbar Link</a></li>
       </ul>
@@ -34,7 +34,7 @@
     <div class="row">
       <form class="col s12">
         <div class="row" style="margin-bottom: 0px">
-          <div class="col s6">
+          <div class="col s5">
             <span>Nama Barang</span>
           </div>
           <div class="col s1">
@@ -47,18 +47,23 @@
             <span>Harga Total</span>
           </div>
         </div>
-        <div class="row">
-          <div class="input-field col s6">
-            <input placeholder="Masukkan Nama/Kode Barang" id="product_1" type="text" class="autocomplete-input">
-          </div>
-          <div class="input-field col s1">
-            <input placeholder="Jumlah" id="quantity_product_1" type="text" class="quantity">
-          </div>
-          <div class="col s2">
-            <span id="unit_cost_1"></span>
-          </div>
-          <div class="col s2">
-            <span id="line_price_1"></span>
+        <div id="fields">
+          <div id="field_1" class="row">
+            <div class="input-field col s5">
+              <input placeholder="Masukkan Nama/Kode Barang" id="product_1" type="text" class="autocomplete-input">
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Jumlah" id="quantity_1" type="text" class="quantity">
+            </div>
+            <div class="input-field col s2">
+              <input disabled type="text" id="unit-cost_1" class="unit-cost">
+            </div>
+            <div class="input-field col s2">
+              <input disabled type="text" id="line-price_1" class="line-price">
+            </div>
+            <div class="input-field col s1">
+              <button id="b_1" class="btn add-more" type="button">+</button>
+            </div>
           </div>
         </div>
         <div class="row">
@@ -84,5 +89,6 @@
   <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
   <script src="js/constants.js"></script>
   <script src="js/transaksi.js"></script>
+  <script src="js/dynamic-button.js"></script>
   </body>
 </html>

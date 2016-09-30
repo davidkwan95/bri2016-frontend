@@ -26,3 +26,12 @@
   font-weight: bold;
   font-style: normal;
 }
+
+.add-more {
+  vertical-align: bottom;
+}
+
+.unit-cost, .line-price {
+  border-bottom: none !important;
+  color: black !important;
+}

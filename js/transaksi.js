@@ -3,9 +3,17 @@ var purchasedProduct = {};
 var calculateTotalPrice = function() {
   var totalPrice = 0;
   for (var key in purchasedProduct) {
-    totalPrice += purchasedProduct[key].unitCost * purchasedProduct[key].quantity;
+    if (purchasedProduct[key]) {
+      totalPrice += purchasedProduct[key].unitCost * purchasedProduct[key].quantity;
+    }
   }
-  return totalPrice
+  return totalPrice;
+}
+
+var recalculateLinePrice = function(id) {
+  var product = purchasedProduct['product_' + id];
+  var newPrice = product.quantity * product.unitCost;
+  $('#line-price_' + id).val('Rp' + newPrice);
 }
 
 var recalculateTotalPrice = function() {
@@ -14,14 +22,16 @@ var recalculateTotalPrice = function() {
   $('#total-price').text(totalPrice);
 }
 
-// quantity handler
-$('.quantity').on('change', function(event) {
+var turnOnQuantityHandler = function(id) {
+  $('#quantity_' + id).on('change', function(event) {
   var quantityId = event.target.id;
-  var fieldId = quantityId.split('_')[2];
+  var id = quantityId.split('_')[1];
   // Change the quantity
-  purchasedProduct['product_' + fieldId].quantity = parseInt(event.target.value);
-  recalculatePrice();
+  purchasedProduct['product_' + id].quantity = parseInt(event.target.value);
+  recalculateLinePrice(id);
+  recalculateTotalPrice();
 });
+}
 
 // POST data to API
 var postData = function() {
@@ -29,8 +39,10 @@ var postData = function() {
 
   var lines = [];
   for (var key in purchasedProduct) {
-    var line = Object.assign({}, purchasedProduct[key]);
-    lines.push(line);
+    if (purchasedProduct[key]) {
+      var line = Object.assign({}, purchasedProduct[key]);
+      lines.push(line);
+    }
   }
 
   var order = {
@@ -68,20 +80,25 @@ var postData = function() {
 // autocomplete
 var client = algoliasearch("DHTQZIC5JA", "753fbdb1826e0196ee382867881a20aa")
 var index = client.initIndex('product');
-autocomplete('.autocomplete-input', {hint: true}, [
-{
-  source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
-  displayKey: 'my_attribute',
-  templates: {
-    suggestion: function(suggestion) {
-      return suggestion._highlightResult.productName.value;
+var autoCompleteInput;
+var turnOnAutoCompleteHandler = function(id) {
+  autoCompleteInput = autocomplete('#product_' + id, {hint: true}, [
+  {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    displayKey: 'my_attribute',
+    templates: {
+      suggestion: function(suggestion) {
+        return suggestion._highlightResult.productName.value;
+      }
     }
   }
-}
-]).on('autocomplete:selected', function(event, suggestion, dataset) {
+  ]);
+
+  var setAutoComplete = function(event, suggestion, dataset) {
     event.target.blur();
     event.target.value = suggestion.productName;
     fieldId = event.target.id;
+    id = fieldId.split('_')[1];
     purchasedProduct[fieldId] = Object.assign({}, purchasedProduct[fieldId], 
       {
         "code": suggestion.productCode,
@@ -89,8 +106,17 @@ autocomplete('.autocomplete-input', {hint: true}, [
         "quantity": 1,
       }
     );
-    $('#quantity_' + fieldId).val(1);
+    $('#quantity_' + id).val(1);
+    $('#unit-cost_' + id).val('Rp' + suggestion.unitCost);
+    recalculateLinePrice(id);
     recalculateTotalPrice();
     console.log(suggestion, dataset);
-});
+  };
 
+  autoCompleteInput.on('autocomplete:selected', setAutoComplete);
+}
+
+$(document).ready(function(){
+    turnOnAutoCompleteHandler(1);
+    turnOnQuantityHandler(1);
+});
