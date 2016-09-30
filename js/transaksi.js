@@ -21,7 +21,7 @@ $('.quantity').on('change', function(event) {
   // Change the quantity
   purchasedProduct['product_' + fieldId].quantity = parseInt(event.target.value);
   recalculatePrice();
-})
+});
 
 // POST data to API
 var postData = function() {
@@ -49,7 +49,7 @@ var postData = function() {
   // });
 
   $.ajax({
-    url: 'http://localhost:8000/order/create',
+    url: baseApiUrl + '/order/create',
     type: 'POST',
     crossDomain: true,
     dataType: 'json',
