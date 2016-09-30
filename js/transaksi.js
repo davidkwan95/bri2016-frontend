@@ -56,7 +56,7 @@ var postData = function() {
     data: JSON.stringify(order),
     success: function (data) {
       orderId = data.orderId;
-      window.location = '/bayar?orderId=' + orderId;
+      window.location = '/bayar.html?orderId=' + orderId;
     },
     error: function() {
       alert("Transaksi gagal, harap coba lagi");  
@@ -79,6 +79,7 @@ autocomplete('.autocomplete-input', {hint: true}, [
   }
 }
 ]).on('autocomplete:selected', function(event, suggestion, dataset) {
+    event.target.blur();
     event.target.value = suggestion.productName;
     fieldId = event.target.id;
     purchasedProduct[fieldId] = Object.assign({}, purchasedProduct[fieldId], 
