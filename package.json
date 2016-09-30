@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently --kill-others \"npm run webpack-watch\" \"npm run express-server\"",
+    "start": "npm run express-server",
     "webpack-watch": "webpack -w",
     "express-server": "node server",
-    "dev": "concurrently --kill-others \"npm run webpack-watch\" \"npm run express-server\"",
+    "dev": "concurrent --kill-others \"npm run webpack-watch\" \"npm run express-server\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
