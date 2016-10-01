@@ -19,18 +19,36 @@ var getOrder = function() {
       console.log('Received Data', data);
       var base64Image = data.image;
       $("#qrcode").append("<img src='data:image/jpeg;base64," + base64Image + "' style='width:360px; height:360px'/>");
-      renderOrderDetail(data.orderDetail);
+      renderOrderSummary(data.orderDetail);
     }
   });
 }
 
-var renderOrderDetail = function(orderDetail) {
-  $("#order-detail").append("<h4>Detail Order</h4>")
+var renderOrderSummary = function(orderDetail) {
+  var $orderDetail = $('#order-detail');
+  $orderDetail.append("<h4>Review Order</h4>")
+  var tableString = ""
+  tableString +=
+    '<table>\
+      <tr>\
+        <th>Nama Produk</th>\
+        <th>Jumlah</th>\
+        <th>Harga Barang</th>\
+        <th>Harga Barang Total</th>\
+      <tr>';
   var orderLines = orderDetail.orderLines;
   orderLines.map(function(line) {
-    var text = line.productName + " x" + line.quantity;
-    $("#order-detail").append("<li>" + text + "</li>");
+    tableString +=
+      '<tr>\
+        <td>'+ line.productName +'</td>\
+        <td>' + line.quantity + '</td>\
+        <td>' + line.unitCost + '</td>\
+        <td>' + line.linePrice + '</td>\
+       </tr>';
   });
+  tableString += '</table>'
+  $orderDetail.append(tableString);
+  $orderDetail.append('<h5>Total Harga: <strong>Rp'+ orderDetail.totalPrice + '</strong></h5>')
 }
 
 var waitStatusConfirmation = function() {
